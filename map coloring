@@ -1,0 +1,70 @@
+# Map Coloring using CSP with Backtracking
+
+# Define the map as a graph (adjacency list)
+# Here we use a simple map of countries with adjacency (example: USA map)
+# Keys are country names, and values are adjacent countries (neighbors)
+graph = {
+    'A': ['B', 'C', 'D'],
+    'B': ['A', 'C', 'D', 'E'],
+    'C': ['A', 'B', 'D', 'E'],
+    'D': ['A', 'B', 'C', 'E'],
+    'E': ['B', 'C', 'D']
+}
+
+# The set of available colors for each region
+colors = ['Red', 'Green', 'Blue', 'Yellow']
+
+# Function to check if the current color assignment is valid
+def is_valid_assignment(assignment, region, color):
+    for neighbor in graph[region]:
+        if neighbor in assignment and assignment[neighbor] == color:
+            return False
+    return True
+
+# Function to perform backtracking search for map coloring
+def map_coloring_backtracking(graph, colors, assignment):
+    if len(assignment) == len(graph):
+        return assignment  # All regions are colored
+
+    # Select the next region (we use a simple heuristic of picking an uncolored region)
+    uncolored_regions = [region for region in graph if region not in assignment]
+    region = uncolored_regions[0]  # For simplicity, select the first uncolored region
+
+    # Try each color for the current region
+    for color in colors:
+        if is_valid_assignment(assignment, region, color):
+            assignment[region] = color  # Assign color to region
+            result = map_coloring_backtracking(graph, colors, assignment)  # Recurse
+            if result:
+                return result
+            del assignment[region]  # Backtrack if no solution is found
+
+    return None  # No valid coloring found
+
+# Function to print the solution (coloring of regions)
+def print_solution(solution):
+    if solution:
+        for region, color in solution.items():
+            print(f"Region {region} is colored {color}")
+    else:
+        print("No valid coloring found.")
+
+# Main function to solve the map coloring problem
+def solve_map_coloring():
+    assignment = {}  # The current coloring assignment (empty initially)
+    solution = map_coloring_backtracking(graph, colors, assignment)
+    print_solution(solution)
+
+# Run the map coloring CSP
+if __name__ == "__main__":
+    solve_map_coloring()
+
+
+output 
+Region A is colored Red
+Region B is colored Green
+Region C is colored Blue
+Region D is colored Yellow
+Region E is colored Red
+
+=== Code Execution Successful ===
