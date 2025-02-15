@@ -1,0 +1,16 @@
+% Prolog Program
+symptom(cough).
+symptom(fever).
+symptom(sore_throat).
+
+disease(flu, [cough, fever]).
+disease(cold, [cough, sore_throat]).
+
+diagnose(Symptoms, Disease) :-
+    disease(Disease, SymptomsList),
+    subset(Symptoms, SymptomsList),
+    writeln('Possible Disease: ' + Disease).
+
+% Query and Output
+?- diagnose([cough, fever], Disease).
+% Output: Possible Disease: flu
