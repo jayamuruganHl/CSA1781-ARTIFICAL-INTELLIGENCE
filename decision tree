@@ -1,0 +1,133 @@
+import numpy as np
+
+# Function to calculate entropy
+def entropy(y):
+    _, counts = np.unique(y, return_counts=True)
+    probabilities = counts / len(y)
+    return -np.sum(probabilities * np.log2(probabilities))
+
+# Function to calculate Information Gain
+def information_gain(X, y, feature):
+    # Get unique values of the feature
+    values = np.unique(X[:, feature])
+    weighted_entropy = 0
+    
+    for value in values:
+        # Split the dataset based on the feature's value
+        left_mask = X[:, feature] == value
+        right_mask = ~left_mask
+        left_y = y[left_mask]
+        right_y = y[right_mask]
+        
+        # Calculate the weighted entropy for the split
+        weight_left = len(left_y) / len(y)
+        weight_right = len(right_y) / len(y)
+        weighted_entropy += weight_left * entropy(left_y) + weight_right * entropy(right_y)
+        
+    # Calculate the Information Gain (IG)
+    return entropy(y) - weighted_entropy
+
+# Function to split the dataset based on the feature and value
+def best_split(X, y):
+    best_feature = None
+    best_value = None
+    best_gain = -1
+
+    # Iterate over all features
+    for feature in range(X.shape[1]):
+        values = np.unique(X[:, feature])
+
+        # Check the best split for this feature
+        for value in values:
+            left_mask = X[:, feature] == value
+            right_mask = ~left_mask
+            left_y = y[left_mask]
+            right_y = y[right_mask]
+
+            # Skip if any side of the split is empty
+            if len(left_y) == 0 or len(right_y) == 0:
+                continue
+
+            gain = information_gain(X, y, feature)
+            
+            # Update the best feature and value if the gain is higher
+            if gain > best_gain:
+                best_gain = gain
+                best_feature = feature
+                best_value = value
+    
+    return best_feature, best_value
+
+# Function to build the decision tree recursively
+def build_tree(X, y, depth=0, max_depth=None):
+    # If all labels are the same, return the label
+    if len(np.unique(y)) == 1:
+        return np.unique(y)[0]
+    
+    # If max depth is reached, return the majority class
+    if max_depth is not None and depth >= max_depth:
+        return np.bincount(y).argmax()
+
+    # Find the best feature and value to split on
+    feature, value = best_split(X, y)
+    
+    if feature is None:
+        return np.bincount(y).argmax()
+    
+    # Split the data
+    left_mask = X[:, feature] == value
+    right_mask = ~left_mask
+    left_y = y[left_mask]
+    right_y = y[right_mask]
+    
+    # Create the decision tree recursively
+    tree = {
+        'feature': feature,
+        'value': value,
+        'left': build_tree(X[left_mask], left_y, depth+1, max_depth),
+        'right': build_tree(X[right_mask], right_y, depth+1, max_depth)
+    }
+    
+    return tree
+
+# Function to predict using the decision tree
+def predict(tree, X):
+    if isinstance(tree, dict):
+        feature = tree['feature']
+        value = tree['value']
+        if X[feature] == value:
+            return predict(tree['left'], X)
+        else:
+            return predict(tree['right'], X)
+    else:
+        return tree
+
+# Example dataset (XOR problem)
+X = np.array([[0, 0],
+              [0, 1],
+              [1, 0],
+              [1, 1]])
+y = np.array([0, 1, 1, 0])  # XOR labels
+
+# Train the decision tree
+tree = build_tree(X, y, max_depth=3)
+
+# Predict on the training data
+predictions = np.array([predict(tree, x) for x in X])
+
+# Display the tree structure and predictions
+print("Decision Tree:")
+print(tree)
+print("\nPredictions:")
+print(predictions)
+
+
+output :  
+
+Decision Tree:
+0
+
+Predictions:
+[0 0 0 0]
+
+=== Code Execution Successful ===
