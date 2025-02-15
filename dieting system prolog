@@ -1,0 +1,15 @@
+% Prolog Program
+diet_system(diabetes, low_sugar).
+diet_system(heart_disease, low_fat).
+diet_system(obesity, low_calorie).
+
+suggest_diet(Disease) :-
+    diet_system(Disease, Diet),
+    writeln('Suggested Diet: ' + Diet).
+
+% Query and Output
+?- suggest_diet(diabetes).
+% Output: Suggested Diet: low_sugar
+
+?- suggest_diet(obesity).
+% Output: Suggested Diet: low_calorie
