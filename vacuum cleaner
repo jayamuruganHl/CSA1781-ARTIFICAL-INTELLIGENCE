@@ -1,0 +1,48 @@
+class VacuumCleaner:
+    def __init__(self, grid, start_position):
+        self.grid = grid
+        self.position = start_position
+
+    def move(self, direction):
+        x, y = self.position
+        if direction == "up" and x > 0:
+            self.position = (x-1, y)
+        elif direction == "down" and x < len(self.grid) - 1:
+            self.position = (x+1, y)
+        elif direction == "left" and y > 0:
+            self.position = (x, y-1)
+        elif direction == "right" and y < len(self.grid[0]) - 1:
+            self.position = (x, y+1)
+        
+        if self.grid[x][y] == 'D':  # Clean the dirt
+            self.grid[x][y] = 'C'
+            print(f"Cleaned at {self.position}")
+    
+    def run(self):
+        while any('D' in row for row in self.grid):
+            x, y = self.position
+            if self.grid[x][y] == 'D':
+                print(f"Cleaning at {self.position}")
+                self.grid[x][y] = 'C'
+            
+            if x > 0 and self.grid[x-1][y] == 'D':
+                self.move("up")
+            elif x < len(self.grid) - 1 and self.grid[x+1][y] == 'D':
+                self.move("down")
+            elif y > 0 and self.grid[x][y-1] == 'D':
+                self.move("left")
+            elif y < len(self.grid[0]) - 1 and self.grid[x][y+1] == 'D':
+                self.move("right")
+            else:
+                break  # No more dirt
+
+grid = [['D', 'C', 'D'], ['D', 'D', 'C'], ['C', 'D', 'D']]
+vacuum = VacuumCleaner(grid, (0, 0))
+vacuum.run()
+
+output 
+Cleaning at (0, 0)
+Cleaning at (1, 0)
+Cleaning at (2, 0)
+Cleaning at (2, 1)
+Cleaning at (2, 2)
