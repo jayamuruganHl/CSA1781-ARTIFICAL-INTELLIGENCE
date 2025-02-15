@@ -1,0 +1,19 @@
+% Database for students, teachers, and subject codes.
+student('John', 'Math').
+student('Alice', 'Science').
+student('Bob', 'History').
+
+teacher('Math', 'Mr. Smith').
+teacher('Science', 'Mrs. Johnson').
+teacher('History', 'Dr. Brown').
+
+subject_code('Math', 101).
+subject_code('Science', 102).
+subject_code('History', 103).
+
+% Query Example:
+% ?- student(Name, Subject), teacher(Subject, Teacher), subject_code(Subject, Code).
+% Output:
+% Name = 'John', Subject = 'Math', Teacher = 'Mr. Smith', Code = 101 ;
+% Name = 'Alice', Subject = 'Science', Teacher = 'Mrs. Johnson', Code = 102 ;
+% Name = 'Bob', Subject = 'History', Teacher = 'Dr. Brown', Code = 103.
