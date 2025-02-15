@@ -1,0 +1,13 @@
+% Prolog Program
+can_fly(bird).
+can_fly(penguin) :- !, fail.
+
+check_fly(Bird) :-
+    (can_fly(Bird) -> writeln(Bird + ' can fly'); writeln(Bird + ' cannot fly')).
+
+% Query and Output
+?- check_fly(bird).
+% Output: bird can fly.
+
+?- check_fly(penguin).
+% Output: penguin cannot fly.
