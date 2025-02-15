@@ -1,0 +1,21 @@
+% Planets database.
+planet('Mercury', 'Terrestrial').
+planet('Venus', 'Terrestrial').
+planet('Earth', 'Terrestrial').
+planet('Mars', 'Terrestrial').
+planet('Jupiter', 'Gas Giant').
+planet('Saturn', 'Gas Giant').
+planet('Uranus', 'Ice Giant').
+planet('Neptune', 'Ice Giant').
+
+% Query Example:
+% ?- planet(Name, Type).
+% Output:
+% Name = 'Mercury', Type = 'Terrestrial' ;
+% Name = 'Venus', Type = 'Terrestrial' ;
+% Name = 'Earth', Type = 'Terrestrial' ;
+% Name = 'Mars', Type = 'Terrestrial' ;
+% Name = 'Jupiter', Type = 'Gas Giant' ;
+% Name = 'Saturn', Type = 'Gas Giant' ;
+% Name = 'Uranus', Type = 'Ice Giant' ;
+% Name = 'Neptune', Type = 'Ice Giant'.
