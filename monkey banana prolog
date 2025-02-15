@@ -1,0 +1,24 @@
+% Prolog Program
+at(monkey, room).
+at(banana, room).
+at(box, room).
+
+move(monkey, box) :-
+    at(monkey, room),
+    at(box, room),
+    writeln('Monkey moves to the box.').
+
+climb(monkey, box) :-
+    move(monkey, box),
+    writeln('Monkey climbs the box to reach the banana.').
+
+get_banana :-
+    climb(monkey, box),
+    at(banana, room),
+    writeln('Monkey gets the banana!').
+
+% Query and Output
+?- get_banana.
+% Output: Monkey moves to the box.
+% Output: Monkey climbs the box to reach the banana.
+% Output: Monkey gets the banana!
