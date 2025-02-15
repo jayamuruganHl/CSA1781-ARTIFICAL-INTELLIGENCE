@@ -1,0 +1,95 @@
+import numpy as np
+
+# Sigmoid activation function
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+
+# Sigmoid derivative
+def sigmoid_derivative(x):
+    return x * (1 - x)
+
+# Feedforward neural network class
+class FeedForwardNN:
+    def __init__(self, input_size, hidden_size, output_size):
+        # Randomly initialize weights and biases
+        self.weights_input_hidden = np.random.rand(input_size, hidden_size)
+        self.bias_hidden = np.random.rand(1, hidden_size)
+        self.weights_hidden_output = np.random.rand(hidden_size, output_size)
+        self.bias_output = np.random.rand(1, output_size)
+
+    def feedforward(self, X):
+        # Calculate hidden layer activation
+        self.hidden_input = np.dot(X, self.weights_input_hidden) + self.bias_hidden
+        self.hidden_output = sigmoid(self.hidden_input)
+
+        # Calculate output layer activation
+        self.output_input = np.dot(self.hidden_output, self.weights_hidden_output) + self.bias_output
+        self.output = sigmoid(self.output_input)
+        return self.output
+
+    def backpropagate(self, X, y, learning_rate):
+        # Compute the error (difference between predicted and true output)
+        output_error = y - self.output
+
+        # Backpropagation for output layer
+        d_output = output_error * sigmoid_derivative(self.output)
+        
+        # Backpropagation for hidden layer
+        hidden_error = d_output.dot(self.weights_hidden_output.T)
+        d_hidden = hidden_error * sigmoid_derivative(self.hidden_output)
+
+        # Update weights and biases
+        self.weights_hidden_output += self.hidden_output.T.dot(d_output) * learning_rate
+        self.bias_output += np.sum(d_output, axis=0, keepdims=True) * learning_rate
+        self.weights_input_hidden += X.T.dot(d_hidden) * learning_rate
+        self.bias_hidden += np.sum(d_hidden, axis=0, keepdims=True) * learning_rate
+
+    def train(self, X, y, epochs, learning_rate):
+        for epoch in range(epochs):
+            self.feedforward(X)
+            self.backpropagate(X, y, learning_rate)
+            if epoch % 1000 == 0:
+                loss = np.mean(np.square(y - self.output))  # Mean squared error
+                print(f"Epoch {epoch}, Loss: {loss}")
+
+# Sample input and output data (XOR problem)
+X = np.array([[0, 0],
+              [0, 1],
+              [1, 0],
+              [1, 1]])
+y = np.array([[0],
+              [1],
+              [1],
+              [0]])
+input_size = 2   
+hidden_size = 4
+output_size = 1  
+nn = FeedForwardNN(input_size, hidden_size, output_size)
+
+# Train the network
+nn.train(X, y, epochs=10000, learning_rate=0.1)
+
+# After training, check the output for the input data
+print("\nFinal Output after training:")
+print(nn.feedforward(X))
+
+
+output :
+Epoch 0, Loss: 0.28561554321233396
+Epoch 1000, Loss: 0.23150362133567992
+Epoch 2000, Loss: 0.17057420379877664
+Epoch 3000, Loss: 0.07770930716455593
+Epoch 4000, Loss: 0.026831712969751495
+Epoch 5000, Loss: 0.013234131613163704
+Epoch 6000, Loss: 0.008208646035917169
+Epoch 7000, Loss: 0.005771063148735808
+Epoch 8000, Loss: 0.00437569564406584
+Epoch 9000, Loss: 0.0034869404160141624
+
+Final Output after training:
+[[0.02514573]
+ [0.94419626]
+ [0.94418931]
+ [0.06818697]]
+
+=== Code Execution Successful ===
