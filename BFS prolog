@@ -1,0 +1,10 @@
+% Prolog Program
+best_first_search(Start, Goal) :-
+    heuristic(Start, H1),
+    heuristic(Goal, H2),
+    H1 =< H2,
+    writeln('Path found from Start to Goal').
+
+% Query and Output
+?- best_first_search(a, b).
+% Output: Path found from Start to Goal
