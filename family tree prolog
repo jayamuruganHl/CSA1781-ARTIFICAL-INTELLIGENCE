@@ -1,0 +1,16 @@
+% Prolog Program
+parent(john, mary).
+parent(john, james).
+parent(mary, susan).
+parent(james, tom).
+
+grandparent(X, Y) :-
+    parent(X, Z),
+    parent(Z, Y).
+
+% Query and Output
+?- grandparent(john, susan).
+% Output: john is the grandparent of susan.
+
+?- grandparent(john, tom).
+% Output: john is the grandparent of tom.
