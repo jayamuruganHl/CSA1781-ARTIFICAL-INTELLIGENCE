@@ -1,0 +1,15 @@
+% Prolog Program
+fact(sun_is_shining).
+fact(ground_is_wet).
+
+rule(ground_is_wet, [sun_is_shining]).
+
+backward_chaining(Query) :-
+    rule(Query, Conditions),
+    fact(X),
+    member(X, Conditions),
+    writeln('Fact found: ' + X).
+
+% Query and Output
+?- backward_chaining(ground_is_wet).
+% Output: Fact found: sun_is_shining
