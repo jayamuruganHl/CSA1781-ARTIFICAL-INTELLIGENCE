@@ -1,0 +1,11 @@
+% Database of people with names and dates of birth (DOB).
+person('John', '1990-05-15').
+person('Alice', '1985-10-30').
+person('Bob', '1992-03-22').
+
+% Query Example:
+% ?- person(Name, DOB).
+% Output:
+% Name = 'John', DOB = '1990-05-15' ;
+% Name = 'Alice', DOB = '1985-10-30' ;
+% Name = 'Bob', DOB = '1992-03-22'.
