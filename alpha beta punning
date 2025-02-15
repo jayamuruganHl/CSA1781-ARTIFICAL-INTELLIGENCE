@@ -1,0 +1,60 @@
+import math
+
+# A simple evaluation function for the game state
+def evaluate_state(state):
+    # Example: In a game like Tic-Tac-Toe, return 1 for a win, -1 for a loss, 0 for a draw
+    if state == 'win':
+        return 1
+    elif state == 'loss':
+        return -1
+    return 0  # draw or undecided
+
+# Generate all possible next moves for the current player
+def get_possible_moves(state):
+    # In a real game, this would generate all possible moves
+    return ['win', 'loss', 'draw']  # Example possible moves
+
+# Alpha-Beta Pruning algorithm
+def alpha_beta_pruning(state, depth, alpha, beta, maximizing_player):
+    # Base case: If we have reached a terminal state or depth limit
+    if depth == 0 or state in ['win', 'loss', 'draw']:
+        return evaluate_state(state)
+    
+    if maximizing_player:
+        max_eval = -math.inf
+        # Try all possible moves
+        for move in get_possible_moves(state):
+            eval = alpha_beta_pruning(move, depth-1, alpha, beta, False)
+            max_eval = max(max_eval, eval)
+            alpha = max(alpha, eval)
+            if beta <= alpha:  # Beta cut-off
+                break
+        return max_eval
+    else:
+        min_eval = math.inf
+        # Try all possible moves
+        for move in get_possible_moves(state):
+            eval = alpha_beta_pruning(move, depth-1, alpha, beta, True)
+            min_eval = min(min_eval, eval)
+            beta = min(beta, eval)
+            if beta <= alpha:  # Alpha cut-off
+                break
+        return min_eval
+
+# Initial call to Alpha-Beta Pruning
+initial_state = 'draw'  # Initial game state (can be any state like 'win', 'loss', 'draw')
+max_depth = 3           # Maximum depth to explore
+alpha = -math.inf      # Initial alpha value
+beta = math.inf        # Initial beta value
+
+# Assuming it's the maximizing player's turn
+best_value = alpha_beta_pruning(initial_state, max_depth, alpha, beta, True)
+print(f"The best score for the maximizing player is: {best_value}")
+
+
+output:
+
+The best score for the maximizing player is: 02
+
+=== Code Execution Successful ===
+
