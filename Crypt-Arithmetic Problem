@@ -1,0 +1,26 @@
+from itertools import permutations
+
+# Define the equation structure
+def crypt_arithmetic():
+    # Letters involved in the problem
+    letters = 'SENDMOREMONEY'
+    digits = '0123456789'
+
+    # Generate all possible digit permutations for the letters
+    for perm in permutations(digits, len(set(letters)))):
+        # Create a dictionary mapping letters to digits
+        letter_to_digit = dict(zip(set(letters), perm))
+        
+        # Substitute the digits for the letters
+        send = int(''.join([letter_to_digit[letter] for letter in 'SEND']))
+        more = int(''.join([letter_to_digit[letter] for letter in 'MORE']))
+        money = int(''.join([letter_to_digit[letter] for letter in 'MONEY']))
+
+        # Check if the equation SEND + MORE = MONEY is satisfied
+        if send + more == money:
+            print(f"SEND = {send}, MORE = {more}, MONEY = {money}")
+            break
+
+crypt_arithmetic()
+output 
+SEND = 9567, MORE = 1085, MONEY = 10652
