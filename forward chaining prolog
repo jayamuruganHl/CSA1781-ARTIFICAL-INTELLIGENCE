@@ -1,0 +1,14 @@
+% Prolog Program
+fact(sun_is_shining).
+fact(ground_is_wet).
+
+rule(ground_is_wet, [sun_is_shining]).
+
+forward_chaining :-
+    fact(X),
+    rule(X, Conditions),
+    writeln('Rule activated: ' + X).
+
+% Query and Output
+?- forward_chaining.
+% Output: Rule activated: sun_is_shining
