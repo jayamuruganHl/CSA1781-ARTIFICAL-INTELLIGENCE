@@ -1,0 +1,16 @@
+% Prolog Program
+fruit_apple(red).
+fruit_banana(yellow).
+fruit_orange(orange).
+
+color_of_fruit(Fruit, Color) :-
+    (Fruit = apple -> color(apple, red);
+    Fruit = banana -> color(banana, yellow);
+    Fruit = orange -> color(orange, orange)).
+
+% Query and Output
+?- color_of_fruit(apple, X).
+% Output: X = red
+
+?- color_of_fruit(banana, X).
+% Output: X = yellow
