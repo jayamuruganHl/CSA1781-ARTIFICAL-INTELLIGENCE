@@ -1,0 +1,22 @@
+% Base case: Move a disk from one pole to another.
+move(1, A, B, _) :-
+    write('Move disk from '), write(A), write(' to '), write(B), nl.
+
+% Recursive case: Move N disks from one pole to another.
+move(N, A, B, C) :-
+    N > 1,
+    N1 is N - 1,
+    move(N1, A, C, B),
+    move(1, A, B, _),
+    move(N1, C, B, A).
+
+% Query Example:
+% ?- move(3, 'A', 'B', 'C').
+% Output: 
+% Move disk from A to C
+% Move disk from A to B
+% Move disk from C to B
+% Move disk from A to C
+% Move disk from B to A
+% Move disk from B to C
+% Move disk from A to C
